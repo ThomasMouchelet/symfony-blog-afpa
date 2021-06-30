@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	{% include "components/_navbar.html.twig" %}
+
+	<div class="container">
+		<h1>{{ post.title }}</h1>
+		<img src="{{ post.image }}" alt="">
+	</div>
+{% endblock %}
