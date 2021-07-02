@@ -21,7 +21,8 @@ class PostFixtures extends Fixture implements DependentFixtureInterface
             $post = new Post();
             $post
                 ->setTitle("Post $i")
-                ->setContent("Content blabla");
+                ->setContent("Content blabla")
+                ->setImage("https://via.placeholder.com/300");
 
             $category = $this->getReference("category_" . rand(0, 4));
             $post->addCategory($category);
