@@ -64,8 +64,8 @@ class Category
 
     public function setSlug(string $slug): self
     {
-        trim($slug);
-        $this->slug = $slug;
+        $newSlug = strtolower(trim($slug));
+        $this->slug = $newSlug;
 
         return $this;
     }
