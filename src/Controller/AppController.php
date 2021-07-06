@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Repository\PostRepository;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,6 +24,38 @@ class AppController extends AbstractController
 
         return $this->render('app/index.html.twig', [
             "post_list" => $post_list
+        ]);
+    }
+
+    /**
+     * @Route("/posts/add", name="posts.create")
+     */
+    public function create(Request $request)
+    {
+        // dd("create posts");
+        $post = new Post();
+
+        $formBuilder = $this->createFormBuilder($post);
+        $formBuilder
+            ->add("title")
+            ->add("content")
+            ->add("submit", SubmitType::class);
+        $form = $formBuilder->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $post = $form->getData();
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($post);
+            $manager->flush();
+
+            return $this->redirectToRoute("posts.list");
+        }
+
+        return $this->render("app/create.html.twig", [
+            "form" => $form->createView()
         ]);
     }
 
