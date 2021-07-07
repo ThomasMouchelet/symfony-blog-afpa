@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Post;
 use App\Repository\PostRepository;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -32,13 +34,19 @@ class AppController extends AbstractController
      */
     public function create(Request $request)
     {
-        // dd("create posts");
         $post = new Post();
 
         $formBuilder = $this->createFormBuilder($post);
         $formBuilder
             ->add("title")
             ->add("content")
+            ->add("categories", EntityType::class, [
+                "class" => Category::class,
+                'label'         => 'Categories',
+                'choice_label'  => 'name',
+                'multiple'      => true,
+                'expanded'      => true,
+            ])
             ->add("submit", SubmitType::class);
         $form = $formBuilder->getForm();
 

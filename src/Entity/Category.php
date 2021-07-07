@@ -64,7 +64,8 @@ class Category
 
     public function setSlug(string $slug): self
     {
-        $newSlug = strtolower(trim($slug));
+        $lowertrim = strtolower(trim($slug));
+        $newSlug = str_replace(" ", "_", $lowertrim);
         $this->slug = $newSlug;
 
         return $this;
@@ -95,5 +96,10 @@ class Category
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }
